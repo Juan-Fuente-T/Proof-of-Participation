@@ -1,4 +1,4 @@
-# Compiler files
+git status# Compiler files
 cache/
 out/
 
@@ -12,3 +12,13 @@ docs/
 
 # Dotenv file
 .env
+
+# Forge
+forge/
+.forge/
+
+# ds-test
+ds-test/
+
+# Solmate
+.solmate/

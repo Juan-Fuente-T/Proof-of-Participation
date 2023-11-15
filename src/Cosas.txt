@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+
+contract MyNFTContract is ChainlinkClient {
+    struct NFTData {
+        string name;
+        string description;
+        string geolocation;
+    }
+
+    mapping(uint256 => NFTData) public nftData;
+
+    // Chainlink Oracle address and Job ID
+    address private oracle = 0x0000000000000000000000000000000000000000;
+    bytes32 private jobId = "00000000000000000000000000000000";
+
+    // Chainlink API endpoint
+    string private apiEndpoint = "https://api.example.com/getNFTData";
+
+    constructor() {
+        setPublicChainlinkToken();
+        setChainlinkOracle(oracle);
+    }
+
+    function mintNFT(uint256 tokenId) public {
+        require(nftData[tokenId].name == "", "NFT already minted");
+
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        request.add("get", apiEndpoint);
+        request.addUint("tokenId", tokenId);
+        bytes32 requestId = sendChainlinkRequestTo(oracle, request, 0);
+
+        // Store the request ID for later reference
+        nftData[tokenId].name = "Pending";
+        nftData[tokenId].description = "Pending";
+        nftData[tokenId].geolocation = "Pending";
+    }
+
+    function fulfill(bytes32 _requestId, string memory _name, string memory _description, string memory _geolocation) public recordChainlinkFulfillment(_requestId) {
+        uint256 tokenId = uint256(_requestId);
+
+        nftData[tokenId].name = _name;
+        nftData[tokenId].description = _description;
+        nftData[tokenId].geolocation = _geolocation;
+    }
+
+    function getNFTData(uint256 tokenId) public view returns (string memory, string memory, string memory) {
+        return (nftData[tokenId].name, nftData[tokenId].description, nftData[tokenId].geolocation);
+    }
+}
+
+-----------------------------FUNCION OBTENER DATOS?-------------
+    function getNFTData(uint256 tokenId) public view returns (string memory, string memory, string memory, string memory) {
+        // The Graph query to retrieve NFT data
+        string memory query = string(abi.encodePacked(
+            '{',
+            '  nfts(where: { id: "', toString(tokenId), '" }) {',
+            '    name',
+            '    description',
+            '    geolocation',
+            '    urlImage',
+            '  }',
+            '}'
+        ));
+
+        folder_cid = "tu_CID_de_carpeta"  //Reemplaza "tu_CID_de_carpeta" con el CID de la carpeta real
+        photo_id = "tu_ID_de_foto"  //Reemplaza "tu_ID_de_foto" con la ID de foto real
+
+        /*
+       //Construir la URL de la foto utilizando el CID de la carpeta y la ID de foto
+        image_url = f"https://black-ashamed-dove-888.mypinata.cloud/ipfs/{folder_cid}/{photo_id}"
+        
+        Chainlink.Request memory request = buildChainlinkRequest(stringToBytes32("tu_IPFS_job_ID"), address(this), this.fulfill.selector);
+        request.add("endpoint", image_url);
+        request.add("hash", "tu_IPFS_hash");
+
+        // Create a Chainlink request to IPFS
+        Chainlink.Request memory request = buildChainlinkRequest(stringToBytes32("your-IPFS-job-ID"), address(this), this.fulfill.selector);
+        request.add("endpoint", "https://black-ashamed-dove-888.mypinata.cloud/ipfs/");
+        request.add("hash", "your-IPFS-hash"); */
+
+        folder_cid = "tu_CID_de_carpeta"  //Reemplaza "tu_CID_de_carpeta" con el CID de la carpeta real
+        photo_id = "tu_ID_de_foto"  //Reemplaza "tu_ID_de_foto" con la ID de foto real
+
+        //Construir la solicitud de Chainlink para obtener el hash de la foto
+        Chainlink.Request memory request = buildChainlinkRequest(stringToBytes32("tu_IPFS_job_ID"), address(this), this.fulfill.selector);
+        request.add("endpoint", "https://black-ashamed-dove-888.mypinata.cloud/ipfs/");
+        request.add("hash", folder_cid);
+
+        // Send the Chainlink request to IPFS
+        bytes32 requestId = sendChainlinkRequestTo(oracle, request, 0);
+
+        // Return the pending data from the mapping
+        return (nftData[tokenId].name, nftData[tokenId].description, nftData[tokenId].geolocation, nftData[tokenId].urlImage);
+    }
+    -------------EJEMPLO JAVASCRPIT SUBIR DATOS IPFS--------------
+
+    const IPFSClient = require('ipfs-http-client');
+
+// Crear el objeto JSON con los metadatos
+const metadata = {
+  nombre: "Nombre del archivo",
+  descripcion: "Descripción del archivo",
+  geolocalizacion: {
+    latitud: 40.7128,
+    longitud: -74.0060
+  },
+  url: "https://www.ejemplo.com/foto.jpg"
+};
+
+// Convertir el objeto JSON a una cadena
+const jsonData = JSON.stringify(metadata);
+
+// Crear una instancia del cliente IPFS
+const ipfs = IPFSClient('localhost', '5001', { protocol: 'http' });
+
+// Subir el JSON a IPFS
+ipfs.add(jsonData)
+  .then(response => {
+    console.log('CID del archivo subido:', response.cid.toString());
+  })
+  .catch(error => {
+    console.error('Error al subir el archivo a IPFS:', error);
+  });
+  --------------------------------------------------------
+
+      // Utility function to convert uint256 to string
+    function toString(uint256 value) private pure returns (string memory) {
+        if (value == 0) {
+            return "0";
+        }
+        uint256 temp = value;
+        uint256 digits;
+        while (temp != 0) {
+            digits++;
+            temp /= 10;
+        }
+        bytes memory buffer = new bytes(digits);
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
+        }
+        return string(buffer);
+
+
+        
+    // Utility function to convert bytes32 to string
+    function bytes32ToString(bytes32 _bytes32) private pure returns (string memory) {
+        bytes memory bytesArray = new bytes(32);
+        for (uint256 i; i < 32; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
+    }
+
+    }
