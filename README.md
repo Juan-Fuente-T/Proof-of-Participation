@@ -1,66 +1,54 @@
-## Foundry
+# POP 
+## Proof of participation
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Este proyecto representa una innovadora implementación de un protocolo de certificación de presencialidad o acontecimiento de eventos, respaldado por **Chainlink**. La aplicación emite NFTs como prueba tangible de haber estado presencialmente en algún evento o de que algún hecho en concreto ha ocurrido, proporcionando una capa adicional de autenticidad a que permita demostrar la realidad que ha estado ocurriendo a nuestro alrededor.
 
-Foundry consists of:
+### Descripción
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+El protocolo POP utiliza la tecnología blockchain para emitir NFTs únicos que representan imagenes de participación en determinado evento o el acontecimiento de cierta situación. Al vincular estos NFTs a dichas imágenes, se crea una prueba irrefutable de los logros educativos, proporcionando una solución segura y transparente para la verificación de los acontecimientos.
 
-## Documentation
+### Funcionalidades Principales
 
-https://book.getfoundry.sh/
+    - Emisión de NFTs Proof of participation: El protocolo emite automáticamente NFTs al iniciar un PoP, demostrando de manera inequívoca la autenticidad de lo acontecido.
 
-## Usage
+    - Integración con Chainlink Keeper: Utiliza la interfaz KeeperCompatible de Chainlink para realizar tareas programadas de mantenimiento, asegurando la consistencia y confiabilidad del protocolo.
 
-### Build
+ ### Requisitos
 
-```shell
-$ forge build
-```
+    Solidity Compiler ^0.8.9
+    Chainlink Contracts v0.8
+    OpenZeppelin Contracts v4.6.0
 
-### Test
+### Configuración
 
-```shell
-$ forge test
-```
+Antes de desplegar este protocolo, asegúrate de tener instaladas las dependencias necesarias y configuradas en tu entorno de desarrollo.
 
-### Format
+- npm install @chainlink/contracts@0.8.0
+- npm install @openzeppelin/contracts@4.6.0
 
-```shell
-$ forge fmt
-```
+### Uso
 
-### Gas Snapshots
+    - Despliegue del Protocolo: Despliega el contrato en tu red preferida.
 
-```shell
-$ forge snapshot
-```
+    - Emisión Automática de NFTs: Al iniciar un nuevo PoP, el protocolo emite automáticamente NFTs asociados, proporcionando pruebas tangibles de los acontecimientos ocurridos.
 
-### Anvil
+    - Verificación de Autenticidad: Utiliza la cadena de bloques y los NFTs emitidos como una forma segura y transparente de verificar la autenticidad de los acontecimientos ocurridos.
 
-```shell
-$ anvil
-```
+### Ejemplo de Integración con Chainlink Keeper
 
-### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+// Ejemplo de cómo utilizar la interfaz KeeperCompatible ###(Aqui pondriamos ejemplos de como lo usamos, no?)
+contract.methods.checkUpkeep().send({ from: "0xYourAddress" });
 
-### Cast
+Contribuciones ###(Entiendo que contribucion no queremos, no? Será cosa de eliminarlo)
 
-```shell
-$ cast <subcommand>
-```
+¡Las contribuciones son bienvenidas! Si encuentras errores o mejoras potenciales, no dudes en abrir un problema o enviar una solicitud de extracción.
+### Licencia (Que tipo de licencia se usará?)
 
-### Help
+Este protocolo está bajo la licencia MIT.
+### Agradecimientos
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Este proyecto se beneficia de las contribuciones de la comunidad y del uso de bibliotecas como **Chainlink** y OpenZeppelin.
+
+
+
