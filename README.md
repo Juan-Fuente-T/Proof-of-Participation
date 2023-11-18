@@ -37,10 +37,10 @@ Antes de desplegar este protocolo, asegúrate de tener instaladas las dependenci
 ### Ejemplo de Integración con Chainlink Keeper
 
 
-// Ejemplo de cómo utilizar la interfaz KeeperCompatible ###(Aqui pondriamos ejemplos de como lo usamos, no?)
+// Ejemplo de cómo utilizar la interfaz KeeperCompatible ### (Aqui pondriamos ejemplos de como lo usamos, no?)
 contract.methods.checkUpkeep().send({ from: "0xYourAddress" });
 
-Contribuciones ###(Entiendo que contribucion no queremos, no? Será cosa de eliminarlo)
+### Contribuciones (Entiendo que contribucion no queremos, no? Será cosa de eliminarlo)
 
 ¡Las contribuciones son bienvenidas! Si encuentras errores o mejoras potenciales, no dudes en abrir un problema o enviar una solicitud de extracción.
 ### Licencia (Que tipo de licencia se usará?)
